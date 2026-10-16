@@ -20,9 +20,9 @@ Everything from the original is kept (profiles, blacklist, settings), plus:
    ```
 3. In game: `/addon load roe`  (add it to your default script to load it on startup).
 
-> Everything here is **untested in game** unless the changelog says otherwise - please report what breaks.
+> Everything here is tested to the best of my ability, changes/fixes will be made as necessary.
+> Claude was used heavily in the creation of this addon.
 
-Because the addon name is `roe`, the folder must be called `roe`. Unload the original `roe` addon first.
 
 ## Commands
 
