@@ -20,7 +20,8 @@ Everything from the original is kept (profiles, blacklist, settings), plus:
    ```
 3. In game: `/addon load roehelper`  (add it to your default script to load it on startup).
 
-> Everything here is **untested in game** unless the changelog says otherwise - please report what breaks.
+> Everything here is tested to the best of my ability - please report what breaks.
+>Claude was used in the creation of this addon.
 
 The addon is called `roehelper` and its command is `/roehelper`, so it can be loaded next to the original `roe` addon. Saved profiles and settings of the original live in `<Ashita>\config\addons\roe\` - copy that folder to `...\config\addons\roehelper\` if you want to keep them.
 
