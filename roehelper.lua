@@ -1,8 +1,8 @@
--- roe.lua – RoE profile helper (Ashita v4)
+-- roehelper.lua – RoE Helper (Ashita v4), based on commandobill/roe
 -- Author: Original by Cair, ported by Commandobill
 -- Description: Create and manage RoE profiles with configurable settings
 
-addon.name    = 'roe'
+addon.name    = 'roehelper'
 addon.version = '1.0.2'
 addon.author  = 'Original by Cair, ported by Commandobill; UI by Adamantking'
 addon.desc    = 'Create and activate RoE profiles'
@@ -16,10 +16,10 @@ local coroutine = coroutine
 local roe_mapping = require('roe_mapping')
 
 -- Print error message
-local function eprint(msg) print(chat.header('roe') .. chat.error(msg)) end
+local function eprint(msg) print(chat.header('roehelper') .. chat.error(msg)) end
 
 -- Print normal message
-local function nprint(msg) print(chat.header('roe') .. chat.message(msg)) end
+local function nprint(msg) print(chat.header('roehelper') .. chat.message(msg)) end
 
 -- Fuzzy string matching function using Ashita v4 string utilities
 local function fuzzy_match(search_term, target_string)
@@ -284,7 +284,7 @@ ashita.events.register('packet_in','roe_in', function(e)
         if was_known then
             for id in pairs(roe.active) do
                 if old_active[id] == nil then
-                    nprint(('RoE taken: #%d  %s   (repeatable: /roe repeat add %d)'):format(id, roe_mapping[id] or '?', id))
+                    nprint(('RoE taken: #%d  %s   (repeatable: /roehelper repeat add %d)'):format(id, roe_mapping[id] or '?', id))
                 end
             end
         end
@@ -719,71 +719,71 @@ local function help()
     nprint([[
 ROE - Command List
 
-/roe help
+/roehelper help
     Show this help menu.
 
-/roe ui
+/roehelper ui
     Toggle the RoE helper window (zone RoEs, element stones, dailies, repeatables).
 
-/roe zone
+/roehelper zone
     Add the combat RoEs and day/weather stones for your current zone.
 
-/roe repeat <add|rem|list> [id or name]
+/roehelper repeat <add|rem|list> [id or name]
     Manage the repeatables list shown in the window.
 
-/roe add <id or name>
+/roehelper add <id or name>
     Add a specific ROE objective by its ID number or name.
     Examples:
-    /roe add 77
-    /roe add "spoils light crystal"
-    /roe add "vanquish enemy"
+    /roehelper add 77
+    /roehelper add "spoils light crystal"
+    /roehelper add "vanquish enemy"
 
-/roe rem <id or name>
+/roehelper rem <id or name>
     Remove a specific ROE objective by its ID number or name.
     Examples:
-    /roe rem 77
-    /roe rem "spoils light crystal"
-    /roe rem "vanquish enemy"
+    /roehelper rem 77
+    /roehelper rem "spoils light crystal"
+    /roehelper rem "vanquish enemy"
 
-/roe addall <name>
+/roehelper addall <name>
     Add all ROE objectives matching the name (max 10 matches).
     Examples:
-    /roe addall "crystal"
-    /roe addall "vanquish"
+    /roehelper addall "crystal"
+    /roehelper addall "vanquish"
 
-/roe remall <name>
+/roehelper remall <name>
     Remove all ROE objectives matching the name (max 10 matches).
     Examples:
-    /roe remall "crystal"
-    /roe remall "vanquish"
+    /roehelper remall "crystal"
+    /roehelper remall "vanquish"
 
-/roe save <profile name>
+/roehelper save <profile name>
     Save your currently set ROE objectives to a named profile.
 
-/roe set <profile name>
+/roehelper set <profile name>
     Load and apply a saved profile of ROE objectives.
     - Objectives may be canceled automatically based on settings.
     - By default, only incomplete objectives will be removed if space is needed.
 
-/roe unset [<profile name>]
+/roehelper unset [<profile name>]
     Remove the currently set ROE objectives.
     - Without a name, it will only remove objectives with no progress.
     - If a profile is specified, it removes only those objectives.
 
-/roe list
+/roehelper list
     List all saved profile names.
 
-/roe settings <name> [true|false]
+/roehelper settings <name> [true|false]
     Toggle a settings value, or set it explicitly.
     * clear         : Remove inactive objectives if needed (default: true)
     * clearprogress : Also remove in-progress objectives (default: false)
     * clearall      : Clear all objectives before loading (default: false)
 
-/roe blacklist [add|remove] <id>
+/roehelper blacklist [add|remove] <id>
     Add or remove a quest from the blacklist.
     - Blacklisted objectives will not be removed automatically.
 
-/roe status
+/roehelper status
     Show current RoE status. If no active objectives are shown, add an RoE objective to refresh the status.
 ]])
 end
@@ -806,9 +806,9 @@ local handlers = {
 
 -- Ashita command event
 ashita.events.register('command','roe_cmd',function(e)
-    local a = e.command:args(); if #a == 0 or a[1]:lower() ~= '/roe' then return end
+    local a = e.command:args(); if #a == 0 or a[1]:lower() ~= '/roehelper' then return end
     e.blocked = true
-    local sub = a[2] and a[2]:lower() or 'ui'   -- plain /roe opens the window; /roe help lists commands
+    local sub = a[2] and a[2]:lower() or 'ui'   -- plain /roehelper opens the window; /roehelper help lists commands
     if handlers[sub] then handlers[sub](table.unpack(a, 3))
     else nprint(('unknown roe sub-command: %s'):format(sub)) end
 end)
@@ -1117,7 +1117,7 @@ local function repeat_add(input)
         table.sort(hits)
         if #hits == 0 then say(('No RoE matches "%s"'):format(input), true) return end
         if #hits > 1 then
-            say(('"%s" matches %d RoEs - use an id (/roe repeat add <id>):'):format(input, #hits), true)
+            say(('"%s" matches %d RoEs - use an id (/roehelper repeat add <id>):'):format(input, #hits), true)
             for i = 1, math.min(5, #hits) do nprint(('  %d: %s'):format(hits[i], roe_mapping[hits[i]])) end
             return
         end
@@ -1154,7 +1154,7 @@ local function repeat_toggle(id, want_on)
     end
 end
 
--- command: /roe ui | /roe zone | /roe repeat <add|rem|list> ---------------------------
+-- command: /roehelper ui | /roehelper zone | /roehelper repeat <add|rem|list> ---------------------------
 handlers.ui   = function() ui.visible = not ui.visible; ui.open[1] = true end
 handlers.zone = function(...)
     local name = table.concat({ ... }, ' ')
@@ -1170,7 +1170,7 @@ handlers['repeat'] = function(action, arg)
     elseif action == 'list' then
         for _, id in ipairs(repeatables()) do nprint(('  %d: %s'):format(id, roe_mapping[id] or '?')) end
     else
-        eprint('usage: /roe repeat add <id or name> | rem <id> | list')
+        eprint('usage: /roehelper repeat add <id or name> | rem <id> | list')
     end
 end
 
