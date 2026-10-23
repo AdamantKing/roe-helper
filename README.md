@@ -43,3 +43,6 @@ Original addon by Cair, Ashita port by Commandobill (MIT). This fork keeps their
 ## AI assistance
 
 The window UI and additions to the original addon were written with the help of Claude (Anthropic); the original code by Cair and Commandobill is theirs. It has not been fully tested in game, so expect bugs and please report them.
+
+## 1.3.0 additions
+- **Aurora look** and a **font scale slider** (25-150%) at the bottom right of the window. The scale is remembered in `config\addons\roehelper\ui.cfg`. Not tested in game.

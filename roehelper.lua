@@ -3,7 +3,7 @@
 -- Description: Create and manage RoE profiles with configurable settings
 
 addon.name    = 'roehelper'
-addon.version = '1.0.2'
+addon.version = '1.3.0'
 addon.author  = 'Original by Cair, ported by Commandobill; UI by Adamantking'
 addon.desc    = 'Create and activate RoE profiles'
 addon.link    = 'https://github.com/commandobill/roe'
@@ -844,6 +844,8 @@ end)
 --------------------------------------------------------------------------------
 local imgui     = require('imgui')
 local theme     = require('theme')
+require('aurora')(theme)
+theme.persist_scale('roehelper')
 local roe_zones = require('roe_zones')
 
 local ui = {
@@ -1264,6 +1266,7 @@ local function draw_window()
     if imgui.SetNextItemWidth then imgui.SetNextItemWidth(300) end
     local preview = ui.sel_key and zone_names[ui.sel_key] or 'Select a zone...'
     if imgui.BeginCombo('##confzone', preview) then
+        theme.child_scale()
         for _, z in ipairs(zone_list) do
             if imgui.Selectable(z.name .. '##cz' .. z.key, ui.sel_key == z.key) then ui.sel_key = z.key end
         end
@@ -1338,6 +1341,7 @@ local function draw_window()
         if btn('Remove All RoEs', 'clr') then ui.clear_arm = now + 3 end
     end
 
+    theme.scale_footer()
     theme.finish()
     if not ui.open[1] then ui.visible = false end
 end
